@@ -1,4 +1,16 @@
 <laravel-boost-guidelines>
+
+# ⚠️ CRITICAL: Backend Development Rules
+
+**BEFORE implementing ANY feature, code change, or suggestion:**
+
+1. Read [Backend Development Rules.md](../Backend%20Development%20Rules.md) completely
+2. Verify your approach aligns with the documented patterns
+3. Check if similar patterns already exist in the codebase
+4. Follow all rules, examples, and conventions documented there
+
+This file is the **authoritative source** for all backend development standards in this application. All code must comply with these rules.
+
 === foundation rules ===
 
 # Laravel Boost Guidelines
@@ -11,6 +23,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - php - 8.3.6
 - laravel/framework (LARAVEL) - v12
 - laravel/prompts (PROMPTS) - v0
+- laravel/sanctum (SANCTUM) - v4
 - laravel/mcp (MCP) - v0
 - laravel/pint (PINT) - v1
 - laravel/sail (SAIL) - v1
