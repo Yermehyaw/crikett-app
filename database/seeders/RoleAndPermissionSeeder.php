@@ -18,10 +18,8 @@ class RoleAndPermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // Create permissions
         $permissions = [];
         foreach (PermissionEnum::cases() as $permission) {
             $permissions[$permission->name()] = Permission::firstOrCreate(
@@ -29,22 +27,20 @@ class RoleAndPermissionSeeder extends Seeder
             );
         }
 
-        // Create roles
         $ownerRole = Role::firstOrCreate(['name' => RoleEnum::OWNER->name(), 'guard_name' => 'web']);
         $adminRole = Role::firstOrCreate(['name' => RoleEnum::ADMIN->name(), 'guard_name' => 'web']);
         $userRole = Role::firstOrCreate(['name' => RoleEnum::USER->name(), 'guard_name' => 'web']);
 
-        // Assign all permissions to OWNER
         $ownerRole->syncPermissions($permissions);
 
-        // Assign admin-related permissions to ADMIN (excluding MANAGE_PERMISSIONS and MANAGE_ROLES)
-        $adminPermissions = array_filter($permissions, function ($key) {
-            return ! in_array($key, [PermissionEnum::MANAGE_PERMISSIONS->name(), PermissionEnum::MANAGE_ROLES->name()]);
-        }, ARRAY_FILTER_USE_KEY);
-
+        $adminPermissions = [
+            PermissionEnum::VIEW_USERS->name(),
+            PermissionEnum::UPDATE_USERS->name(),
+            PermissionEnum::DELETE_USERS->name(),
+            PermissionEnum::VIEW_ADMINS->name(),
+        ];
         $adminRole->syncPermissions($adminPermissions);
 
-        // USER role gets no permissions by default
         $userRole->syncPermissions([]);
     }
 }
