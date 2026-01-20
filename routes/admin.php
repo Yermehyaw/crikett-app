@@ -1,0 +1,27 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AuthController;
+
+Route::prefix('v1')->group(function () {
+
+    Route::prefix('auth')->name('auth.')
+        ->controller(AuthController::class)->group(function () {
+            Route::post('/sessions', 'login')->name('login');
+            Route::delete('/sessions', 'logout')
+                ->middleware('auth:sanctum')->name('logout');
+            Route::get('/email/verify/{id}/{hash}', 'verifyEmail')
+                ->middleware(['signed', 'throttle:verification'])
+                ->name('verification.verify');
+            Route::post('/email/verification-notification', 'resendVerificationEmail')
+                ->middleware(['auth:sanctum', 'throttle:verification'])
+                ->name('verification.resend');
+        });
+
+    Route::middleware('auth:sanctum')->prefix('profile')->name('profile.')
+        ->controller(AuthController::class)->group(function () {
+            Route::get('/', 'profile')->name('show');
+            Route::put('/', 'updateProfile')->name('update');
+            Route::post('/avatar', 'uploadAvatar')->name('avatar');
+        });
+});
