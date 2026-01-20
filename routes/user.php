@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\AuthController;
+use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
 
@@ -25,7 +25,7 @@ Route::prefix('v1')->group(function () {
                 ->name('password.reset');
         });
 
-    Route::middleware('auth:sanctum')->prefix('profile')->name('profile.')
+    Route::middleware(['auth:sanctum', 'verified'])->prefix('profile')->name('profile.')
         ->controller(AuthController::class)->group(function () {
             Route::get('/', 'profile')->name('show');
             Route::put('/', 'updateProfile')->name('update');
